@@ -1,0 +1,6 @@
+qwe {{ if foo == bar }} Hello World {{ end }} ewq
+qwe {{ if foo == "bar" }} Hello World {{ end }} ewq
+qwe {{ if foo == "ba\"r" }} Hello World {{ end }} ewq
+qwe {{ if foo == "b{{ar" }} Hello World {{ end }} ewq
+qwe {{ if foo == "b}}ar" }} Hello World {{ end }} ewq
+qwe {{ if foo == "b{{a}}r" }} Hello World {{ end }} ewq
