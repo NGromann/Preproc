@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "tsc && node ./dist/src/index.js tests/files/dummy.yaml -d foo=bar bar=baz yes test=test=test",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,6 +18,10 @@
   },
   "homepage": "https://github.com/NGromann/YamlPreprocessor#readme",
   "dependencies": {
-    "commander": "^6.1.0"
+    "commander": "^6.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.6",
+    "@types/commander": "^2.12.2"
   }
 }

@@ -1,7 +1,7 @@
 info:
-  {{ if foo }}
+  {{ if !foo }}
   title: Hello
-  {{ else if bar == baz }}
+  {{ else if bar == "baz" }}
   title: World
   {{ else }}
   title: not found

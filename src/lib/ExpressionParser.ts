@@ -1,12 +1,20 @@
-const Expression = require('./Expression');
+import { Expression, ExpressionType } from './Expression';
 
 const openingExpr = /\{\{/g;
 const closingExpr = /\}\}/g;
 const quoteExpr = /(?<!\\)\"/g;
 
-const logMatch = (match) => console.log(`Found ${match[0]} start=${match.index} end=${match.index + match[0].length}.`);
+const expressionFilterTypeMap: { [regex: string]: number } = {
+    "else if (.*)" : ExpressionType.ElseCondition,
+    "if (.*)" : ExpressionType.Condition,
+    "else" : ExpressionType.Else,
+    "end" : ExpressionType.BlockEnd,
+    "=(.*)" : ExpressionType.Assignment,
+};
 
-function findExpressionsInText(content) {
+const logMatch = (match: RegExpMatchArray) => console.log(`Found ${match[0]} start=${match.index} end=${match.index + match[0].length}.`);
+
+export function findExpressionsInText(content: string) {
     let openingMatches = Array.from(content.matchAll(openingExpr));
     let closingMatches = Array.from(content.matchAll(closingExpr));
     let quoteMatches = Array.from(content.matchAll(quoteExpr));
@@ -24,7 +32,7 @@ function findExpressionsInText(content) {
         closingMatches = closingMatches.filter(x => x.index < openingQuoteMatch.index || x.index > closingQuoteMatch.index);
     }
     
-    var expressions = [];
+    let expressions = [];
     for (const openingMatch of openingMatches) {
         // Find the next closingExpression
         const closingMatch = closingMatches.find(x => x.index > openingMatch.index);
@@ -39,12 +47,26 @@ function findExpressionsInText(content) {
         const expressionContentStart = openingMatch.index + openingMatch[0].length;
         const expressionContentEnd = closingMatch.index;
         
-        const expressionContent = content.substring(expressionContentStart, expressionContentEnd).trim();
+        const expressionText = content.substring(expressionContentStart, expressionContentEnd).trim();
 
-        expressions.push(new Expression(expressionContent, expressionStart, expressionEnd));
+        let expressionType = null;
+        let expressionContent = null;
+
+        for (const expressionFilter of Object.keys(expressionFilterTypeMap)) {
+            const match = new RegExp(expressionFilter).exec(expressionText);
+            if (match != null) {
+                expressionType = expressionFilterTypeMap[expressionFilter];
+                expressionContent = match[1] || null;
+                break;
+            }
+        }
+
+        if (expressionType == null) {
+            throw Error(`Operator expected in ${expressionText}`);
+        }
+
+        expressions.push(new Expression(expressionType, expressionContent, expressionStart, expressionEnd));
     }
 
     return expressions;
 }
-
-module.exports.findExpressionsInText = findExpressionsInText;
