@@ -57,7 +57,10 @@ export function findExpressionsInText(content: string) {
             const match = new RegExp(expressionFilter).exec(expressionText);
             if (match != null) {
                 expressionType = expressionFilterTypeMap[expressionFilter];
-                expressionContent = match[1] || null;
+                if (match.length >= 2) {
+                    expressionContent = match[1].trim();
+                }
+
                 break;
             }
         }

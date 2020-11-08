@@ -11,12 +11,12 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\src\\index.ts",
+            "program": "${workspaceFolder}\\src\\cli.ts",
             "preLaunchTask": "tsc: build - tsconfig.json",
             "outFiles": [
                 "${workspaceFolder}/dist/**/*.js"
             ],
-            "args": [ "tests/files/dummy.yaml", "-d", "foo=bar", "bar=baz" ]
+            "args": [ "tests/files/dummy.yaml", "-s", "foo=bar", "bar=baz" ]
         }
     ]
 }

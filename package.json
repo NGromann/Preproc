@@ -2,9 +2,10 @@
   "name": "yamlpreprocessor",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/src/index.js",
   "scripts": {
-    "start": "tsc && node ./dist/src/index.js tests/files/dummy.yaml -d foo=bar bar=baz yes test=test=test",
+    "build": "tsc",
+    "start": "tsc && node ./dist/src/cli.js tests/files/dummy.yaml -s foo=bar bar=baz yes test=test=test",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,11 +18,17 @@
     "url": "https://github.com/NGromann/YamlPreprocessor/issues"
   },
   "homepage": "https://github.com/NGromann/YamlPreprocessor#readme",
+  "bin": {
+    "preproc": "dist/src/cli.js"
+  },
   "dependencies": {
     "commander": "^6.2.0"
   },
   "devDependencies": {
     "@types/node": "^14.14.6",
     "@types/commander": "^2.12.2"
+  },
+  "engines": {
+    "node": "12.x"
   }
 }

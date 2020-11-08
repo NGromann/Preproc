@@ -5,6 +5,8 @@ import { compileAndRun, compileCode } from "./ExpressionCompiler";
 let content: string;
 let followingExpressions: Expression[];
 
+const debug = false;
+
 export function runExpressions(startContent: string, expressions: Expression[], sandbox: {[key: string]: any }) {
     content = startContent;
 
@@ -26,8 +28,10 @@ export function runExpressions(startContent: string, expressions: Expression[], 
                 conditionResult = !!compileAndRun(`return ${expression.expressionContent}`, sandbox);
             }
             
-            console.log('________________');
-            console.log('Evaluation: '+conditionResult);
+            if (debug) {
+                console.log('________________');
+                console.log('Evaluation: '+conditionResult);
+            }
 
             if (conditionResult) 
             {
@@ -48,8 +52,10 @@ export function runExpressions(startContent: string, expressions: Expression[], 
                 }
 
 
-                console.log(`Remove from ${expression.start} to ${expression.end}`);
-                console.log(`${content.substring(expression.start, expression.end)}`);
+                if (debug) {
+                    console.log(`Remove from ${expression.start} to ${expression.end}`);
+                    console.log(`${content.substring(expression.start, expression.end)}`);
+                }
                 
                 RemoveExpressionFromContent(expression);
                 
@@ -57,15 +63,20 @@ export function runExpressions(startContent: string, expressions: Expression[], 
                 if (nextElseBlock && nextElseBlock.start < nextEndBlock.start) {
                     // There is an else(-if) block before the end block.
                     // Remove everything between.
-                    console.log(`Also remove from ${nextElseBlock.start} to ${nextEndBlock.end} (else)`);
-                    console.log(`${content.substring(nextElseBlock.start, nextEndBlock.end)}`);
+                    
+                    if (debug) {
+                        console.log(`Also remove from ${nextElseBlock.start} to ${nextEndBlock.end} (else)`);
+                        console.log(`${content.substring(nextElseBlock.start, nextEndBlock.end)}`);
+                    }
                     
                     RemoveRangeFromContent(nextElseBlock.start, nextEndBlock.end);
                 }
                 else
                 {
-                    console.log(`Also remove from ${nextEndBlock.start} to ${nextEndBlock.end} (end)`);
-                    console.log(`${content.substring(nextEndBlock.start, nextEndBlock.end)}`);
+                    if (debug) {
+                        console.log(`Also remove from ${nextEndBlock.start} to ${nextEndBlock.end} (end)`);
+                        console.log(`${content.substring(nextEndBlock.start, nextEndBlock.end)}`);
+                    }
 
                     RemoveExpressionFromContent(nextEndBlock);
                 }
@@ -86,13 +97,17 @@ export function runExpressions(startContent: string, expressions: Expression[], 
 
                 const rangeEndIndex = nextElseEndBlock.expressionType == ExpressionType.BlockEnd ? nextElseEndBlock.end : nextElseEndBlock.start;
 
-                console.log(`Remove from ${expression.start} to ${rangeEndIndex}:`);
-                console.log(`${content.substring(expression.start, rangeEndIndex)}`);
+                if (debug) {
+                    console.log(`Remove from ${expression.start} to ${rangeEndIndex}:`);
+                    console.log(`${content.substring(expression.start, rangeEndIndex)}`);
+                }
 
                 RemoveRangeFromContent(expression.start, rangeEndIndex);
             }
 
-            console.log(`Updated content:\n${content}\n`);
+            if (debug) {
+                console.log(`Updated content:\n${content}\n`);
+            }
             
             break;
         case ExpressionType.Execution:
@@ -111,8 +126,13 @@ export function runExpressions(startContent: string, expressions: Expression[], 
             break;
         }
     }
-    console.log("\n\n\nFinal Content:\n");
-    console.log(content);
+
+    if (debug) {
+        console.log("\n\n\nFinal Content:\n");
+        console.log(content);
+    }
+
+    return content;
 }
 
 function firstExpressionOnLevelWhere(expressions: Expression[], filter: (expression: Expression) => boolean) {

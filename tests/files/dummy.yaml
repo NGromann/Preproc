@@ -5,20 +5,24 @@ info:
         date = new Date();
         timeString = date.toLocaleString();
     }}
-    main: {{ = greeting }}
+    
+    greeting: {{ = 
+        greeting 
+    }}
+
     {{ if bar == "baz" }}
-        title: bar == "baz"
+    title: bar == "baz"
         {{ if foo != "bar" }}
-            description: foo == "bar"
+    description: foo == "bar"
         {{ else }}
-            description: foo != "bar"
+    description: foo != "bar"
         {{ end }}
     {{ else }}
-        title: bar != "baz"
+    title: bar != "baz"
         {{ if foo != "bar" }}
-            description: foo == "bar"
+    description: foo == "bar"
         {{ else }}
-            description: foo != "bar"
+    description: foo != "bar"
         {{ end }}
     {{ end }}
     calculation: {{ = res > 100 ? "High" : "Low" }}
