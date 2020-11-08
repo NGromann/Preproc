@@ -1,6 +1,6 @@
 
 export function compileCode (src: string, sandbox: any) {
-  src = 'with (sandbox) {' + src + '}';
+  src = 'with (sandbox) {\n' + src + '\n}';
   var fn = new Function('sandbox', src);
   return fn.bind(sandbox);
 }

@@ -1,11 +1,19 @@
+import { stringify } from "querystring";
 import { Expression, ExpressionType } from "./Expression";
 import { compileAndRun, compileCode } from "./ExpressionCompiler";
 
-export function runExpressions(content: string, expressions: Expression[], sandbox: {[key: string]: any }) {
-    for (let i = 0; i < expressions.length; i++) {
-        let expression = expressions[i];
+let content: string;
+let followingExpressions: Expression[];
 
-        let followingExpressions = expressions.slice(i+1);
+export function runExpressions(startContent: string, expressions: Expression[], sandbox: {[key: string]: any }) {
+    content = startContent;
+
+    followingExpressions = expressions;
+
+    while(followingExpressions.length > 0) {
+        let expression = followingExpressions[0];
+
+        followingExpressions.shift();
 
         switch (expression.expressionType) {
         case ExpressionType.Condition:
@@ -18,6 +26,9 @@ export function runExpressions(content: string, expressions: Expression[], sandb
                 conditionResult = !!compileAndRun(`return ${expression.expressionContent}`, sandbox);
             }
             
+            console.log('________________');
+            console.log('Evaluation: '+conditionResult);
+
             if (conditionResult) 
             {
                 // The expression evaluated to true. 
@@ -36,11 +47,28 @@ export function runExpressions(content: string, expressions: Expression[], sandb
                     throw Error('End expected');
                 }
 
+
+                console.log(`Remove from ${expression.start} to ${expression.end}`);
+                console.log(`${content.substring(expression.start, expression.end)}`);
+                
+                RemoveExpressionFromContent(expression);
+                
+
                 if (nextElseBlock && nextElseBlock.start < nextEndBlock.start) {
                     // There is an else(-if) block before the end block.
                     // Remove everything between.
-                    console.log(`Remove from ${nextElseBlock.start} to ${nextEndBlock.end}`);
-                } 
+                    console.log(`Also remove from ${nextElseBlock.start} to ${nextEndBlock.end} (else)`);
+                    console.log(`${content.substring(nextElseBlock.start, nextEndBlock.end)}`);
+                    
+                    RemoveRangeFromContent(nextElseBlock.start, nextEndBlock.end);
+                }
+                else
+                {
+                    console.log(`Also remove from ${nextEndBlock.start} to ${nextEndBlock.end} (end)`);
+                    console.log(`${content.substring(nextEndBlock.start, nextEndBlock.end)}`);
+
+                    RemoveExpressionFromContent(nextEndBlock);
+                }
             }
             else 
             {
@@ -56,10 +84,35 @@ export function runExpressions(content: string, expressions: Expression[], sandb
                     throw Error('End or else expected');
                 }
 
-                console.log(`Remove from ${expression.start} to ${nextElseEndBlock.end}`);
+                const rangeEndIndex = nextElseEndBlock.expressionType == ExpressionType.BlockEnd ? nextElseEndBlock.end : nextElseEndBlock.start;
+
+                console.log(`Remove from ${expression.start} to ${rangeEndIndex}:`);
+                console.log(`${content.substring(expression.start, rangeEndIndex)}`);
+
+                RemoveRangeFromContent(expression.start, rangeEndIndex);
             }
+
+            console.log(`Updated content:\n${content}\n`);
+            
+            break;
+        case ExpressionType.Execution:
+            compileAndRun(expression.expressionContent, sandbox);
+
+            RemoveExpressionFromContent(expression);
+
+            break;
+        case ExpressionType.Assignment:
+            const executionResult = compileAndRun(`return ${expression.expressionContent}`, sandbox);
+            
+            RemoveExpressionFromContent(expression);
+
+            insertIntoContent(executionResult, expression.start);
+
+            break;
         }
     }
+    console.log("\n\n\nFinal Content:\n");
+    console.log(content);
 }
 
 function firstExpressionOnLevelWhere(expressions: Expression[], filter: (expression: Expression) => boolean) {
@@ -67,7 +120,7 @@ function firstExpressionOnLevelWhere(expressions: Expression[], filter: (express
     for (let i = 0; i < expressions.length; i++) {
         const expression = expressions[i];
 
-        if (filter(expression) === true) {
+        if (currentLevel == 0 && filter(expression) === true) {
             return expression;
         }
 
@@ -88,3 +141,70 @@ function firstExpressionOnLevel(expressions: Expression[]) {
     return firstExpressionOnLevelWhere(expressions, () => true);
 }
 
+// Removes the expression from the expression list and from the file content string
+function RemoveExpressionFromContent(expression: Expression) {
+    const index = followingExpressions.indexOf(expression);
+
+    // Remove the expression from the followingExpressions list
+    if (index != -1) {
+        followingExpressions.splice(index, 1);
+    }
+
+    // Cut the expression out of the content string
+    content = content.slice(0, expression.start) + content.slice(expression.end);
+
+    const cutLength = expression.end - expression.start;
+
+    // Update the following expression's start and end indexes
+    for (const followingExpression of followingExpressions) {
+        if (followingExpression.start > expression.start) {
+            followingExpression.start -= cutLength;
+            followingExpression.end -= cutLength;
+        }
+    }
+
+    return expression;
+}
+
+// Removes all the expressions between the start and end index from the followingExpressions list.
+// Also cuts the substring between the start and end index from the file content string.
+function RemoveRangeFromContent(start: number, end: number) {
+    var expressionsInRange = followingExpressions.filter(expr => expr.start >= start && expr.end <= end);
+
+    for (const expression of expressionsInRange) {
+        const index = followingExpressions.indexOf(expression);
+    
+        // Remove the expression from the followingExpressions list
+        followingExpressions.splice(index, 1);        
+    }
+
+    // Cut the expression out of the content string
+    content = content.slice(0, start) + content.slice(end);
+
+    // Update the following expression's start and end indexes
+    const cutLength = end - start;
+    for (const followingExpression of followingExpressions) {
+        if (followingExpression.start > start) {
+            followingExpression.start -= cutLength;
+            followingExpression.end -= cutLength;
+        }
+    }
+
+
+
+    return expressionsInRange;
+}
+
+function insertIntoContent(insertion: string, position: number) {
+    content = content.substring(0, position) + insertion + content.substring(position);
+
+    const insertionLength = insertion.length;
+
+    for (const followingExpression of followingExpressions) {
+        if (followingExpression.start > position) {
+            followingExpression.start += insertionLength;
+            followingExpression.end += insertionLength;
+        }
+    }
+
+}

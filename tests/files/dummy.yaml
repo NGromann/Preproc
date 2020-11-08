@@ -1,8 +1,25 @@
 info:
-  {{ if !foo }}
-  title: Hello
-  {{ else if bar == "baz" }}
-  title: World
-  {{ else }}
-  title: not found
-  {{ end }}
+    {{ : 
+        greeting = "Hello there!";
+        res = 5 * 50;
+        date = new Date();
+        timeString = date.toLocaleString();
+    }}
+    main: {{ = greeting }}
+    {{ if bar == "baz" }}
+        title: bar == "baz"
+        {{ if foo != "bar" }}
+            description: foo == "bar"
+        {{ else }}
+            description: foo != "bar"
+        {{ end }}
+    {{ else }}
+        title: bar != "baz"
+        {{ if foo != "bar" }}
+            description: foo == "bar"
+        {{ else }}
+            description: foo != "bar"
+        {{ end }}
+    {{ end }}
+    calculation: {{ = res > 100 ? "High" : "Low" }}
+    date: {{ = timeString }}

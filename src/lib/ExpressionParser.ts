@@ -5,11 +5,12 @@ const closingExpr = /\}\}/g;
 const quoteExpr = /(?<!\\)\"/g;
 
 const expressionFilterTypeMap: { [regex: string]: number } = {
-    "else if (.*)" : ExpressionType.ElseCondition,
-    "if (.*)" : ExpressionType.Condition,
-    "else" : ExpressionType.Else,
-    "end" : ExpressionType.BlockEnd,
-    "=(.*)" : ExpressionType.Assignment,
+    "^\\s*else if ([\\s\\S]*)\\s*$" : ExpressionType.ElseCondition, // [\\s\\S] workaround for missing dot-all flag
+    "^\\s*if ([\\s\\S]*)\\s*$" : ExpressionType.Condition,
+    "^\\s*else\\s*$" : ExpressionType.Else,
+    "^\\s*end\\s*$" : ExpressionType.BlockEnd,
+    "^\\s*\\=([\\s\\S]*)\\s*$" : ExpressionType.Assignment,
+    "^\\s*\\:([\\s\\S]*)\\s*$" : ExpressionType.Execution,
 };
 
 const logMatch = (match: RegExpMatchArray) => console.log(`Found ${match[0]} start=${match.index} end=${match.index + match[0].length}.`);
@@ -65,7 +66,7 @@ export function findExpressionsInText(content: string) {
             throw Error(`Operator expected in ${expressionText}`);
         }
 
-        expressions.push(new Expression(expressionType, expressionContent, expressionStart, expressionEnd));
+        expressions.push(new Expression(expressionText, expressionType, expressionContent, expressionStart, expressionEnd));
     }
 
     return expressions;
