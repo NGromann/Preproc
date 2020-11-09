@@ -31,5 +31,46 @@ const parser = require('preproc');
 const input = 'Current Date: {{ = new Date().toLocaleString() }}';
 const result = parser.Parse(input, {});
 
-console.log(result);
+console.log(result); // Current Date: 9.11.2020, 18:51:09
 ```
+
+## Preprocessor expressions
+There are currently 4 types of preprocessor expressions. All of them must be wrapped into double curly brackets `{{ ... }}`.
+
+#### Executions
+The `:` operator can be used to simply execute code:
+```
+{{ :
+  const date = new Date();
+  const timeString = date.toLocaleString();
+}}
+Current Date: {{ = timeString }}
+```
+Result:
+`Current Date: 9.11.2020, 18:51:09`
+
+#### Assignments
+The `=` operator can be used to return a given value:
+```
+Current Date: {{ = new Date().toLocaleString() }}
+```
+Result:
+`Current Date: 9.11.2020, 18:51:09`
+
+#### Conditions
+Use the keywords `if`, `else if`, `else` and `end` to output the inner text based on conditions:
+```
+{{ :
+  const currentHour = new Date().getHours();
+}}
+
+{{ if currentHour <= 10 }}
+Good morning!
+{{ else if currentHour >= 18 }}
+Good evening!
+{{ else }}
+Good day!
+{{ end }}
+```
+Result:
+`Good evening!`
