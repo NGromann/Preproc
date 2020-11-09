@@ -35,7 +35,7 @@ console.log(result); // Current Date: 9.11.2020, 18:51:09
 ```
 
 ## Preprocessor expressions
-There are currently 4 types of preprocessor expressions. All of them must be wrapped into double curly brackets `{{ ... }}`.
+The preprocessor expressions can be written in JavaScript. All of them must be wrapped into double curly brackets `{{ ... }}`.
 
 #### Executions
 The `:` operator can be used to simply execute code:
