@@ -74,3 +74,11 @@ Good day!
 ```
 Result:
 `Good evening!`
+
+## Command-line Options
+| Short | Full      | Description                                                                         |
+|-------|-----------|-------------------------------------------------------------------------------------|
+| -V    | --version | output the version number                                                           |
+| -s    | --set     | set one or more variables to be used. E.g. "-d foo=bar baz"                         |
+| -o    | --output  | write the result into the given file path instead of outputting it into the console |
+| -h    | --help    | display help for command                                                            |
