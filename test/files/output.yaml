@@ -1,0 +1,13 @@
+info:
+    
+    
+    greeting: Hello there!
+
+    
+    title: bar == "baz"
+        
+    description: foo != "bar"
+        
+    
+    calculation: High
+    date: 8.11.2020, 20:19:44
