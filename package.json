@@ -1,5 +1,5 @@
 {
-  "name": "yamlpreprocessor",
+  "name": "preproc",
   "version": "1.0.0",
   "description": "",
   "main": "dist/src/index.js",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NGromann/YamlPreprocessor.git"
+    "url": "git+https://github.com/NGromann/Preproc.git"
   },
   "author": "Niklas Gromann (niklasgromann@icloud.com)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/NGromann/YamlPreprocessor/issues"
+    "url": "https://github.com/NGromann/Preproc/issues"
   },
-  "homepage": "https://github.com/NGromann/YamlPreprocessor#readme",
+  "homepage": "https://github.com/NGromann/Preproc#readme",
   "bin": {
     "preproc": "dist/src/cli.js"
   },
