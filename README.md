@@ -1,5 +1,8 @@
 # Preproc.js - The only preprocessor you will ever need.
 
+![npm](https://img.shields.io/npm/v/preproc.js)
+![GitHub](https://img.shields.io/github/license/NGromann/Preproc)
+
 ## What is preproc.js?
 Preproc.js is an all in one preprocessor usable for all types of files. The expressions can be written in JavaScript and compiled from the command line or using node.js. 
 
