@@ -1,16 +1,19 @@
 # Preproc.js - The only preprocessor you will ever need.
 
+![npm](https://img.shields.io/npm/v/preproc.js)
+![GitHub](https://img.shields.io/github/license/NGromann/Preproc)
+
 ## What is preproc.js?
 Preproc.js is an all in one preprocessor usable for all types of files. The expressions can be written in JavaScript and compiled from the command line or using node.js. 
 
 ## Usage
 ### Command line
-#### Install preproc.js:
+Install preproc.js:
 ``` console
 foo@bar:~$ npm install -g preproc.js
 ```
 
-#### Compile the source file:
+Compile the source file:
 ``` console
 foo@bar:~$ preproc <input-path>
 ```
@@ -20,12 +23,12 @@ foo@bar:~$ preproc <input-path> -o <output-path>
 ```
 
 ### Node.js
-#### Install preproc.js:
+Install preproc.js:
 ``` console
 foo@bar:~$ npm install preproc.js
 ```
 
-#### Compile a string:
+Compile a string:
 ``` javascript
 const parser = require('preproc');
 const input = 'Current Date: {{ = new Date().toLocaleString() }}';
@@ -76,9 +79,9 @@ Result:
 `Good evening!`
 
 ## Command-line Options
-| Short | Full      | Description                                                                         |
-|-------|-----------|-------------------------------------------------------------------------------------|
-| -V    | --version | output the version number                                                           |
-| -s    | --set     | set one or more variables to be used. E.g. "-d foo=bar baz"                         |
-| -o    | --output  | write the result into a file instead of the console                                 |
-| -h    | --help    | display help for command                                                            |
+| Short | Full                   | Description                                                                                    |
+|-------|------------------------|------------------------------------------------------------------------------------------------|
+| -V    | --version              | output the version number                                                                      |
+| -s    | --set \<variables...\> | set one or more variables to be used. `"-d foo=bar baz"` can be retrieved using `{{ = foo }}`  |
+| -o    | --output \<path\>      | write the result into a file instead of the console                                            |
+| -h    | --help                 | display help for command                                                                       |
