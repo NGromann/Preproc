@@ -5,12 +5,12 @@ Preproc.js is an all in one preprocessor usable for all types of files. The expr
 
 ## Usage
 ### Command line
-#### Install preproc.js:
+Install preproc.js:
 ``` console
 foo@bar:~$ npm install -g preproc.js
 ```
 
-#### Compile the source file:
+Compile the source file:
 ``` console
 foo@bar:~$ preproc <input-path>
 ```
@@ -20,12 +20,12 @@ foo@bar:~$ preproc <input-path> -o <output-path>
 ```
 
 ### Node.js
-#### Install preproc.js:
+Install preproc.js:
 ``` console
 foo@bar:~$ npm install preproc.js
 ```
 
-#### Compile a string:
+Compile a string:
 ``` javascript
 const parser = require('preproc');
 const input = 'Current Date: {{ = new Date().toLocaleString() }}';
