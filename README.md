@@ -76,9 +76,9 @@ Result:
 `Good evening!`
 
 ## Command-line Options
-| Short | Full      | Description                                                                         |
-|-------|-----------|-------------------------------------------------------------------------------------|
-| -V    | --version | output the version number                                                           |
-| -s    | --set     | set one or more variables to be used. E.g. "-d foo=bar baz"                         |
-| -o    | --output  | write the result into a file instead of the console                                 |
-| -h    | --help    | display help for command                                                            |
+| Short | Full                   | Description                                                                                    |
+|-------|------------------------|------------------------------------------------------------------------------------------------|
+| -V    | --version              | output the version number                                                                      |
+| -s    | --set \<variables...\> | set one or more variables to be used. `"-d foo=bar baz"` can be retrieved using `{{ = foo }}`  |
+| -o    | --output \<path\>      | write the result into a file instead of the console                                            |
+| -h    | --help                 | display help for command                                                                       |
