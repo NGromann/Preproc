@@ -5,7 +5,8 @@
 
 ## What is preproc.js?
 Preproc.js is an all in one preprocessor usable for all types of files. The expressions can be written in JavaScript and compiled from the command line or using node.js. 
-
+<br>
+[Try it out the example](example/#readme)!
 ## Usage
 ### Command line
 Install preproc.js:
