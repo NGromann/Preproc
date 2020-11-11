@@ -1,0 +1,24 @@
+name: Martin D'vloper
+{{ : // The nickname field should only be included if it is set. }}
+{{ if nickname }}
+nickname: {{ = nickname }}
+{{ end }}
+job: Developer
+skill: Elite
+employed: True
+{{ if includeFavFood }}
+foods:
+  - Apple
+  - Orange
+  - Strawberry
+  - Mango
+{{ end }}
+languages:
+  perl: Elite
+  python: Elite
+  pascal: Lame
+education: |
+  4 GCSEs
+  3 A-Levels
+  BSc in the Internet of Things
+date: {{ = new Date().toLocaleString() }}
