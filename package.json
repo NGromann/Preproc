@@ -1,6 +1,6 @@
 {
   "name": "preproc.js",
-  "version": "1.0.0",
+  "version": "0.1.1",
   "description": "",
   "main": "dist/src/index.js",
   "scripts": {
@@ -25,10 +25,7 @@
     "commander": "^6.2.0"
   },
   "devDependencies": {
-    "@types/node": "^14.14.6",
-    "@types/commander": "^2.12.2"
-  },
-  "engines": {
-    "node": "12.x"
+    "@types/commander": "^2.12.2",
+    "@types/node": "^14.14.7"
   }
 }
